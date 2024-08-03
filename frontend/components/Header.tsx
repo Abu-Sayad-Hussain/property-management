@@ -1,13 +1,32 @@
+import { FC } from 'react';
 import Link from 'next/link';
+import useAuth from '../hooks/useAuth';
 
-const Header = () => {
+const Header: FC = () => {
+  const { isAuthenticated, logout } = useAuth();
+
   return (
-    <header className="bg-blue-500 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-xl font-bold">Property Management</h1>
-        <nav>
-          <Link href="/">Home</Link>
-        </nav>
+    <header className="bg-blue-500 p-4 text-white flex justify-between">
+      <div>
+        <Link href="/home" legacyBehavior>
+          <a className="text-2xl font-bold">Property Management</a>
+        </Link>
+      </div>
+      <div>
+        {isAuthenticated ? (
+          <button onClick={logout} className="mr-4">
+            Logout
+          </button>
+        ) : (
+          <>
+            <Link href="/login" legacyBehavior>
+              <a className="mr-4">Login</a>
+            </Link>
+            <Link href="/register" legacyBehavior>
+              <a>Register</a>
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );

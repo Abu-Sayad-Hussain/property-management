@@ -3,15 +3,37 @@ import { getRepository } from 'typeorm';
 import { Property } from '../models/Property';
 
 // Controller to get all properties
-export const getAllProperties = async (req: Request, res: Response) => {
-    const propertyRepository = getRepository(Property);
+export const searchProperties = async (req: Request, res: Response) => {
+    const { query } = req.query;
+  
     try {
-        const properties = await propertyRepository.find();
-        res.status(200).json(properties);
+      const propertyRepository = getRepository(Property);
+  
+      let properties;
+  
+      if (typeof query === 'string' && query.trim() !== '') {
+        // If query is provided, search by name, city, or state
+        properties = await propertyRepository
+          .createQueryBuilder('property')
+          .where('property.name LIKE :query', { query: `%${query}%` })
+          .orWhere('property.city LIKE :query', { query: `%${query}%` })
+          .orWhere('property.state LIKE :query', { query: `%${query}%` })
+          .getMany();
+      } else {
+        // If no query is provided, get all properties
+        properties = await propertyRepository.find();
+      }
+  
+      if (properties.length === 0) {
+        return res.status(404).json({ message: 'No properties found' });
+      }
+  
+      res.status(200).json(properties);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to fetch properties', error });
+      console.error(error); // Log error for debugging
+      res.status(500).json({ error: 'Failed to search properties' });
     }
-};
+  };
 
 // Controller to get a property by ID
 export const getPropertyById = async (req: Request, res: Response) => {
@@ -37,4 +59,32 @@ export const getPropertyById = async (req: Request, res: Response) => {
 export const scrapePropertyData = async (req: Request, res: Response) => {
     // Implement scraping logic here
     res.status(200).json({ message: 'Scraping initiated' });
+};
+
+export const createProperty = async (req: Request, res: Response) => {
+    const propertyRepository = getRepository(Property);
+    const { name, address, state, city, zipCode, county, phone, type, capacity } = req.body;
+
+    try {
+        // Create a new property instance
+        const newProperty = propertyRepository.create({
+            name,
+            address,
+            city,
+            zipCode,
+            county,
+            phone,
+            type,
+            capacity,
+            state,
+        });
+
+        // Save the new property to the database
+        const savedProperty = await propertyRepository.save(newProperty);
+
+        res.status(201).json(savedProperty);
+    } catch (error) {
+        console.error('Error creating property:', error);
+        res.status(500).json({ error: 'Failed to create property' });
+    }
 };

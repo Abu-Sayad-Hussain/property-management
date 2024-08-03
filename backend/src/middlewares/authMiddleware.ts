@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { getRepository } from 'typeorm';
-import { User } from '../models/User';
+import { User } from '../models/User'; // Adjust the import to match your actual User entity path
 
 export const authenticateToken = async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(' ')[1]; // Assumes Bearer token
@@ -15,15 +15,16 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
         const userRepository = getRepository(User);
 
         // Find user by primary key directly
-        const user = await userRepository.findOne(decoded.userId as any); // Cast to `any` to resolve type issue
+        const user = await userRepository.findOne({ where: { id: decoded.userId } });
 
         if (!user) {
             return res.status(401).json({ message: 'Invalid token' });
         }
 
-        req.user = user; // Now TypeScript recognizes `req.user`
+        req.user = user; // Attach user to the request object
         next();
     } catch (error) {
+        console.log(error);
         res.status(401).json({ message: 'Failed to authenticate token', error });
     }
 };

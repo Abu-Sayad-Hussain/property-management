@@ -1,16 +1,32 @@
-import { FC, useState } from 'react';
+// pages/home.tsx
+import { FC, useState, useEffect } from 'react';
 import Header from '../components/Header';
 import PropertyCard from '../components/PropertyCard';
 import { Property } from '@/types/property';
+import useAuth from '../hooks/useAuth';
 
-const IndexPage: FC = () => {
-  const [properties, setProperties] = useState([]);
+const HomePage: FC = () => {
+  const { isAuthenticated, loading } = useAuth();
+  const [properties, setProperties] = useState<Property[]>([]);
+
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      // Redirect to login page if not authenticated
+      window.location.href = '/login';
+    }
+  }, [loading, isAuthenticated]);
 
   const searchProperties = async (query: string) => {
-    const res = await fetch(`/api/properties?query=${query}`);
+    const res = await fetch(`http://localhost:5000/api/properties?query=${query}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`, // Pass the token
+      },
+    });
     const data = await res.json();
     setProperties(data);
   };
+
+  if (loading || !isAuthenticated) return <div>Loading...</div>; // Optional: Show loading state while checking authentication
 
   return (
     <div>
@@ -23,7 +39,7 @@ const IndexPage: FC = () => {
           onChange={(e) => searchProperties(e.target.value)}
         />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-          {properties.map((property: Property) => (
+          {properties.map((property) => (
             <PropertyCard
               key={property.id}
               id={property.id}
@@ -39,4 +55,4 @@ const IndexPage: FC = () => {
   );
 };
 
-export default IndexPage;
+export default HomePage;

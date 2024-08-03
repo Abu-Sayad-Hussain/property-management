@@ -19,7 +19,7 @@ const PropertyPage: FC<PropertyPageProps> = ({ property }) => {
         city={property.city}
         state={property.state}
         zip={property.zip}
-        county={property.county}
+        country={property.country}
         phone={property.phone}
         type={property.type}
         capacity={property.capacity}

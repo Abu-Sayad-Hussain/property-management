@@ -1,28 +1,35 @@
+// models/property.ts
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('properties')
 export class Property {
     @PrimaryGeneratedColumn()
-    id!: number; // Initialize with a default value
+    id!: number;
 
-    @Column()
+    @Column({ type: 'varchar', length: 255, default: '' }) // Default empty string
+    name?: string;
+
+    @Column({ type: 'varchar', length: 255, default: '' }) // Default empty string
     address?: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 255, default: '' }) // Default empty string
+    state?: string;
+
+    @Column({ type: 'varchar', length: 255, default: '' }) // Default empty string
     city?: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 20, default: '' }) // Default empty string
     zipCode?: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 255, default: '' }) // Default empty string
     county?: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 20, default: '' }) // Default empty string
     phone?: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 100, default: '' }) // Default empty string
     type?: string;
 
-    @Column()
+    @Column({ type: 'int', default: 0 }) // Default 0
     capacity?: number;
 }

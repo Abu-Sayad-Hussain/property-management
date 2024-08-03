@@ -5,7 +5,7 @@ export interface Property {
     city: string;
     state: string;
     zip: string;
-    county: string;
+    country: string;
     phone: string;
     type: string;
     capacity: number;

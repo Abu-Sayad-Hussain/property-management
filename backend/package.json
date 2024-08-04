@@ -20,6 +20,7 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.0",
+    "puppeteer": "^22.15.0",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {

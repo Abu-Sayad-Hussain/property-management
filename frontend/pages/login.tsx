@@ -53,7 +53,7 @@ const LoginPage: FC = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="w-full p-2 border border-gray-300 rounded text-gray-900"
             />
           </div>
           <div>
@@ -67,7 +67,7 @@ const LoginPage: FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="w-full p-2 border border-gray-300 rounded text-gray-900"
             />
           </div>
           <div>
@@ -80,7 +80,7 @@ const LoginPage: FC = () => {
           </div>
           <div className="flex items-center justify-between">
             <a href="/register" className="text-sm text-blue-600 hover:text-blue-700">
-              Create an account
+              Create an account? Sign Up
             </a>
           </div>
         </form>

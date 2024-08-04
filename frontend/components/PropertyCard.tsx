@@ -1,23 +1,23 @@
 import { FC } from 'react';
-import { Property } from '@/types/property';
+import Link from 'next/link';
 
 interface PropertyCardProps {
-    id: number,
-    name: string,
-    city: string,
-    state: string,
-    imageUrl: string
-};
+  id: number;
+  name: string;
+  city: string;
+  state: string;
+  imageUrl?: string;
+}
 
 const PropertyCard: FC<PropertyCardProps> = ({ id, name, city, state, imageUrl }) => {
   return (
-    <div className="border rounded-lg p-4">
-      <img src={imageUrl} alt={name} className="w-full h-48 object-cover rounded-t-lg" />
-      <div className="p-2">
-        <h3 className="text-xl font-bold">{name}</h3>
-        <p className="text-gray-700">{city}, {state}</p>
+    <Link href={`/properties/${id}`} passHref>
+      <div className="block p-4 border rounded shadow hover:bg-gray-100 cursor-pointer">
+        <img src={imageUrl || '/placeholder.png'} alt={name} className="w-full h-32 object-cover rounded" />
+        <h3 className="text-lg font-semibold mt-2">{name}</h3>
+        <p className="text-sm text-gray-600">{city}, {state}</p>
       </div>
-    </div>
+    </Link>
   );
 };
 

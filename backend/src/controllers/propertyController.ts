@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
+import puppeteer from 'puppeteer';
 import { Property } from '../models/Property';
+import { scrapeProperty } from '../utils/scrape';
 
 // Controller to get all properties
 export const searchProperties = async (req: Request, res: Response) => {
@@ -57,8 +59,25 @@ export const getPropertyById = async (req: Request, res: Response) => {
 
 // Optional: Controller to scrape property data
 export const scrapePropertyData = async (req: Request, res: Response) => {
-    // Implement scraping logic here
-    res.status(200).json({ message: 'Scraping initiated' });
+    const searchTerms = ['Brookdale Creekside'];
+
+    try {
+        const propertyRepository = getRepository(Property);
+        
+        for (const term of searchTerms) {
+            const properties = await scrapeProperty(term);
+            
+            for (const prop of properties) {
+                const property = propertyRepository.create(prop);
+                await propertyRepository.save(property);
+            }
+        }
+
+        res.status(200).json({ message: 'Scraping and saving completed' });
+    } catch (error) {
+        console.error('Error scraping data:', error);
+        res.status(500).json({ message: 'Error scraping data' });
+    }
 };
 
 export const createProperty = async (req: Request, res: Response) => {

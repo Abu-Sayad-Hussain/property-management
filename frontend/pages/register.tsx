@@ -59,7 +59,7 @@ const RegisterPage: FC = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="w-full p-2 border border-gray-300 rounded text-gray-900"
             />
           </div>
           <div>
@@ -73,7 +73,7 @@ const RegisterPage: FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="w-full p-2 border border-gray-300 rounded text-gray-900"
             />
           </div>
           <div>
@@ -87,7 +87,7 @@ const RegisterPage: FC = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="w-full p-2 border border-gray-300 rounded text-gray-900"
             />
           </div>
           <div>

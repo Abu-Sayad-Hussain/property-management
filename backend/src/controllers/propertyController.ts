@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
-import puppeteer from 'puppeteer';
 import { Property } from '../models/Property';
 import { scrapeProperty } from '../utils/scrape';
 
@@ -59,26 +58,32 @@ export const getPropertyById = async (req: Request, res: Response) => {
 
 // Optional: Controller to scrape property data
 export const scrapePropertyData = async (req: Request, res: Response) => {
-    const searchTerms = ['Brookdale Creekside'];
+    const { searchTerms } = req.body;
+
+    if (!Array.isArray(searchTerms) || searchTerms.length === 0) {
+        return res.status(400).json({ message: 'Please provide an array of search terms.' });
+    }
 
     try {
         const propertyRepository = getRepository(Property);
-        
+        const allProperties = [];
+
         for (const term of searchTerms) {
-            const properties = await scrapeProperty(term);
-            
-            for (const prop of properties) {
-                const property = propertyRepository.create(prop);
-                await propertyRepository.save(property);
+            const property = await scrapeProperty(term);
+            if(Object.keys(property).length > 0){
+                    const createProperty = propertyRepository.create(property);
+                    await propertyRepository.save(createProperty);
+                    allProperties.push(property);
             }
         }
 
-        res.status(200).json({ message: 'Scraping and saving completed' });
+        res.status(200).json({ message: 'Scraping and saving completed', properties: allProperties });
     } catch (error) {
         console.error('Error scraping data:', error);
         res.status(500).json({ message: 'Error scraping data' });
     }
-};
+};  
+  
 
 export const createProperty = async (req: Request, res: Response) => {
     const propertyRepository = getRepository(Property);

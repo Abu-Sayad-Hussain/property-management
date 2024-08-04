@@ -15,10 +15,9 @@ export const scrapeProperty = async (searchTerm: string) => {
     await page.type('#searchterm', searchTerm);
 
     await page.click('[class="ctaButton"]');
-    
+
     // Wait for the results table to load
-    await page.waitForSelector('[class="sortabletable"]');
-    console.log('called wait sort table');
+    await page.waitForSelector('[class="sortabletable"]', { timeout: 120000 });
 
     // Extract property data from the table
     const properties = await page.evaluate(() => {
@@ -42,6 +41,6 @@ export const scrapeProperty = async (searchTerm: string) => {
   } catch (error) {
     console.error('Error scraping data:', error);
     await browser.close();
-    throw error;
+    return {};
   }
 };

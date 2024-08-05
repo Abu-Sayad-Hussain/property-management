@@ -71,8 +71,9 @@ Create a .env.local file in the frontend directory with the following content:
 
 ```bash
 NEXT_PUBLIC_API_URL=http://localhost:5000/api
-Start the frontend server:
 ```
+Start the frontend server:
+
 ```bash
 npm run dev
 ```

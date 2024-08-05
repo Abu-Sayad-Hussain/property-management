@@ -75,8 +75,9 @@ Start the frontend server:
 ```
 ```bash
 npm run dev
-The frontend server will be running on http://localhost:3000.
 ```
+The frontend server will be running on http://localhost:3000.
+
 ## Usage
 ## Backend Endpoints
 ### Authentication
